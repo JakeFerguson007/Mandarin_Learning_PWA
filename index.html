@@ -2,16 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1c6641">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Mandarin">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
     <title>Mandarin Learning</title>
+
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app">
         <div id="homeScreen">
-            <h1>Mandarin Learning</h1>
+            <div class="brandRow">
+                <img class="appIcon" src="icons/icon-192.png" alt="Mandarin Learning icon">
+                <div>
+                    <h1>Mandarin Learning</h1>
+                    <p class="tagline">Learn characters. Build words.</p>
+                </div>
+            </div>
+
             <h2>Choose a Lesson</h2>
             <div id="lessonList"></div>
+
             <h2>Word Building</h2>
             <div id="wordLessonList"></div>
         </div>
@@ -26,8 +45,10 @@
                 <div id="pinyin" class="pinyin hidden"></div>
                 <div id="meaning" class="meaning hidden"></div>
             </div>
-            <button id="revealButton">Reveal</button>
-            <button id="nextButton" class="hidden">Next</button>
+            <div class="actionRow">
+                <button id="revealButton">Reveal</button>
+                <button id="nextButton" class="hidden">Next</button>
+            </div>
         </div>
 
         <div id="wordLessonScreen" class="hidden">
@@ -40,12 +61,21 @@
                 <div id="wordPinyin" class="pinyin hidden"></div>
                 <div id="wordMeaning" class="meaning hidden"></div>
             </div>
-            <button id="wordRevealButton">Reveal</button>
-            <button id="wordNextButton" class="hidden">Next</button>
+            <div class="actionRow">
+                <button id="wordRevealButton">Reveal</button>
+                <button id="wordNextButton" class="hidden">Next</button>
+            </div>
         </div>
     </div>
 
     <script src="data.js"></script>
     <script src="script.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("./service-worker.js");
+            });
+        }
+    </script>
 </body>
 </html>
