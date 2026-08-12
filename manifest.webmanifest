@@ -1,0 +1,19 @@
+{
+  "name": "Mandarin Learning",
+  "short_name": "Mandarin",
+  "description": "Learn fundamental Mandarin characters and build words from them.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7efdd",
+  "theme_color": "#1c6641",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
