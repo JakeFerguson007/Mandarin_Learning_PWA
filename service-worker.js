@@ -1,10 +1,12 @@
-const CACHE_NAME = "mandarin-learning-v3";
+const CACHE_NAME = "mandarin-learning-v4";
 const ASSETS = [
   "./",
   "./index.html",
   "./style.css",
+  "./daily.css",
   "./data.js",
   "./script.js",
+  "./daily.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png"
 ];
