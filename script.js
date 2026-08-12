@@ -8,12 +8,19 @@ let words = [];
 let currentWordCard = 0;
 let wordRevealStep = 0;
 
+const STORAGE_KEY = "mandarinLearningProgressV2";
+let progressState = loadProgress();
+
 const homeScreen = document.getElementById("homeScreen");
 const lessonScreen = document.getElementById("lessonScreen");
 const wordLessonScreen = document.getElementById("wordLessonScreen");
 
 const lessonList = document.getElementById("lessonList");
 const wordLessonList = document.getElementById("wordLessonList");
+
+const learnedCharacters = document.getElementById("learnedCharacters");
+const learnedWords = document.getElementById("learnedWords");
+const courseProgressBar = document.getElementById("courseProgressBar");
 
 const lessonTitle = document.getElementById("lessonTitle");
 const characterElement = document.getElementById("character");
@@ -35,20 +42,89 @@ const wordCardNumber = document.getElementById("wordCardNumber");
 const wordCardTotal = document.getElementById("wordCardTotal");
 const wordBackButton = document.getElementById("wordBackButton");
 
+function loadProgress() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (saved) {
+            return {
+                completedLessons: Array.isArray(saved.completedLessons) ? saved.completedLessons : [],
+                completedWordLessons: Array.isArray(saved.completedWordLessons) ? saved.completedWordLessons : []
+            };
+        }
+    } catch (error) {
+        console.warn("Could not load saved progress.", error);
+    }
+
+    return { completedLessons: [], completedWordLessons: [] };
+}
+
+function saveProgress() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+}
+
+function isLessonComplete(number) {
+    return progressState.completedLessons.includes(number);
+}
+
+function isLessonUnlocked(number) {
+    return number === 1 || isLessonComplete(number - 1) || isLessonComplete(number);
+}
+
+function isWordLessonComplete(number) {
+    return progressState.completedWordLessons.includes(number);
+}
+
+function isWordLessonUnlocked(lesson) {
+    return isLessonComplete(lesson.requiresLesson) || isWordLessonComplete(lesson.lessonNumber);
+}
+
+function updateProgressDashboard() {
+    const completedCharacterCount = lessons
+        .filter(lesson => isLessonComplete(lesson.lessonNumber))
+        .reduce((total, lesson) => total + lesson.characters.length, 0);
+
+    const completedWordCount = wordLessons
+        .filter(lesson => isWordLessonComplete(lesson.lessonNumber))
+        .reduce((total, lesson) => total + lesson.words.length, 0);
+
+    learnedCharacters.textContent = completedCharacterCount;
+    learnedWords.textContent = completedWordCount;
+
+    const totalCharacters = lessons.reduce((total, lesson) => total + lesson.characters.length, 0);
+    const percent = totalCharacters ? (completedCharacterCount / totalCharacters) * 100 : 0;
+    courseProgressBar.style.width = `${percent}%`;
+}
+
 function displayLessons() {
     lessonList.innerHTML = "";
 
     lessons.forEach(function (lesson) {
+        const unlocked = isLessonUnlocked(lesson.lessonNumber);
+        const completed = isLessonComplete(lesson.lessonNumber);
         const lessonButton = document.createElement("button");
-        lessonButton.classList.add("lessonButton");
+
+        lessonButton.className = "lessonButton";
+        if (!unlocked) lessonButton.classList.add("locked");
+        if (completed) lessonButton.classList.add("completed");
+        lessonButton.disabled = !unlocked;
+
+        const status = completed ? "✓ Completed" : unlocked ? `${lesson.characters.length} characters` : "🔒 Complete the previous lesson";
+
         lessonButton.innerHTML = `
-            <strong>Lesson ${lesson.lessonNumber}</strong><br>
-            ${lesson.title}<br>
-            <small>${lesson.characters.length} characters</small>
+            <span class="lessonTopline">
+                <strong>Lesson ${lesson.lessonNumber}</strong>
+                <span>${completed ? "✓" : unlocked ? "→" : "🔒"}</span>
+            </span>
+            <span class="lessonTitleText">${lesson.title}</span>
+            <small>${status}</small>
         `;
-        lessonButton.addEventListener("click", function () {
-            startLesson(lesson);
-        });
+
+        if (unlocked) {
+            lessonButton.addEventListener("click", function () {
+                startLesson(lesson);
+            });
+        }
+
         lessonList.appendChild(lessonButton);
     });
 }
@@ -57,30 +133,61 @@ function displayWordLessons() {
     wordLessonList.innerHTML = "";
 
     wordLessons.forEach(function (lesson) {
+        const unlocked = isWordLessonUnlocked(lesson);
+        const completed = isWordLessonComplete(lesson.lessonNumber);
         const button = document.createElement("button");
-        button.classList.add("lessonButton");
+
+        button.className = "lessonButton wordLessonButton";
+        if (!unlocked) button.classList.add("locked");
+        if (completed) button.classList.add("completed");
+        button.disabled = !unlocked;
+
+        const status = completed ? "✓ Completed" : unlocked ? `${lesson.words.length} words` : `🔒 Finish Character Lesson ${lesson.requiresLesson}`;
+
         button.innerHTML = `
-            <strong>Word Building ${lesson.lessonNumber}</strong><br>
-            ${lesson.title}<br>
-            <small>${lesson.words.length} words</small>
+            <span class="lessonTopline">
+                <strong>Word Building ${lesson.lessonNumber}</strong>
+                <span>${completed ? "✓" : unlocked ? "→" : "🔒"}</span>
+            </span>
+            <span class="lessonTitleText">${lesson.title}</span>
+            <small>${status}</small>
         `;
-        button.addEventListener("click", function () {
-            startWordLesson(lesson);
-        });
+
+        if (unlocked) {
+            button.addEventListener("click", function () {
+                startWordLesson(lesson);
+            });
+        }
+
         wordLessonList.appendChild(button);
     });
+}
+
+function refreshHome() {
+    updateProgressDashboard();
+    displayLessons();
+    displayWordLessons();
+}
+
+function showHome() {
+    lessonScreen.classList.add("hidden");
+    wordLessonScreen.classList.add("hidden");
+    homeScreen.classList.remove("hidden");
+    refreshHome();
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function startLesson(lesson) {
     currentLesson = lesson;
     characters = lesson.characters;
     currentCard = 0;
-    lessonTitle.textContent = lesson.title;
+    lessonTitle.textContent = `Lesson ${lesson.lessonNumber}: ${lesson.title}`;
     cardTotal.textContent = characters.length;
     homeScreen.classList.add("hidden");
     wordLessonScreen.classList.add("hidden");
     lessonScreen.classList.remove("hidden");
     showCard();
+    window.scrollTo(0, 0);
 }
 
 function showCard() {
@@ -97,6 +204,7 @@ function showCard() {
 
     revealStep = 0;
     cardNumber.textContent = currentCard + 1;
+    nextButton.textContent = currentCard === characters.length - 1 ? "Finish Lesson" : "Next";
 }
 
 revealButton.addEventListener("click", function () {
@@ -113,25 +221,32 @@ revealButton.addEventListener("click", function () {
 });
 
 nextButton.addEventListener("click", function () {
-    currentCard = (currentCard + 1) % characters.length;
+    if (currentCard === characters.length - 1) {
+        if (!isLessonComplete(currentLesson.lessonNumber)) {
+            progressState.completedLessons.push(currentLesson.lessonNumber);
+            saveProgress();
+        }
+        showHome();
+        return;
+    }
+
+    currentCard++;
     showCard();
 });
 
-backButton.addEventListener("click", function () {
-    lessonScreen.classList.add("hidden");
-    homeScreen.classList.remove("hidden");
-});
+backButton.addEventListener("click", showHome);
 
 function startWordLesson(lesson) {
     currentWordLesson = lesson;
     words = lesson.words;
     currentWordCard = 0;
-    wordLessonTitle.textContent = lesson.title;
+    wordLessonTitle.textContent = `Word Building ${lesson.lessonNumber}: ${lesson.title}`;
     wordCardTotal.textContent = words.length;
     homeScreen.classList.add("hidden");
     lessonScreen.classList.add("hidden");
     wordLessonScreen.classList.remove("hidden");
     showWordCard();
+    window.scrollTo(0, 0);
 }
 
 function showWordCard() {
@@ -148,6 +263,7 @@ function showWordCard() {
 
     wordRevealStep = 0;
     wordCardNumber.textContent = currentWordCard + 1;
+    wordNextButton.textContent = currentWordCard === words.length - 1 ? "Finish Words" : "Next";
 }
 
 wordRevealButton.addEventListener("click", function () {
@@ -164,14 +280,19 @@ wordRevealButton.addEventListener("click", function () {
 });
 
 wordNextButton.addEventListener("click", function () {
-    currentWordCard = (currentWordCard + 1) % words.length;
+    if (currentWordCard === words.length - 1) {
+        if (!isWordLessonComplete(currentWordLesson.lessonNumber)) {
+            progressState.completedWordLessons.push(currentWordLesson.lessonNumber);
+            saveProgress();
+        }
+        showHome();
+        return;
+    }
+
+    currentWordCard++;
     showWordCard();
 });
 
-wordBackButton.addEventListener("click", function () {
-    wordLessonScreen.classList.add("hidden");
-    homeScreen.classList.remove("hidden");
-});
+wordBackButton.addEventListener("click", showHome);
 
-displayLessons();
-displayWordLessons();
+refreshHome();
