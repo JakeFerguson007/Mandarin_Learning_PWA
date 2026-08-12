@@ -9,9 +9,7 @@
     <meta name="apple-mobile-web-app-title" content="Mandarin">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-
     <title>Mandarin Learning</title>
-
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
@@ -28,113 +26,49 @@
                     <p class="tagline">Learn characters. Build words. Remember them.</p>
                 </div>
             </div>
-
             <div class="progressPanel">
-                <div><strong id="learnedCharacters">0</strong><span>of 25 characters</span></div>
+                <div><strong id="learnedCharacters">0</strong><span>of <span id="totalCharacters">50</span> characters</span></div>
                 <div><strong id="learnedWords">0</strong><span>words practiced</span></div>
             </div>
             <div class="courseProgress"><div id="courseProgressBar"></div></div>
-
             <button id="reviewButton" class="reviewButton">
-                <span><strong>Review Weak Items</strong><small id="reviewCount">Nothing marked yet</small></span>
-                <span>→</span>
+                <span><strong>Review Weak Items</strong><small id="reviewCount">Nothing marked yet</small></span><span>→</span>
             </button>
-
-            <h2>Character Lessons</h2>
-            <div id="lessonList"></div>
-
-            <h2>Word Building</h2>
-            <div id="wordLessonList"></div>
+            <h2>Character Lessons</h2><div id="lessonList"></div>
+            <h2>Word Building</h2><div id="wordLessonList"></div>
         </div>
-
         <div id="lessonScreen" class="hidden">
-            <button id="backButton" class="backButton">← Lessons</button>
-            <h1>Mandarin Learning</h1>
-            <h2 id="lessonTitle"></h2>
+            <button id="backButton" class="backButton">← Lessons</button><h1>Mandarin Learning</h1><h2 id="lessonTitle"></h2>
             <div class="progress">Character <span id="cardNumber">1</span> of <span id="cardTotal">5</span></div>
-            <div class="flashcard">
-                <div id="character" class="character hidden"></div>
-                <div id="pinyin" class="pinyin hidden"></div>
-                <div id="meaning" class="meaning hidden"></div>
-            </div>
-            <div id="characterRating" class="ratingRow hidden">
-                <button id="characterAgainButton" class="secondaryButton">Still Learning</button>
-                <button id="characterKnowButton">I Know It</button>
-            </div>
-            <div class="actionRow">
-                <button id="revealButton">Reveal</button>
-                <button id="nextButton" class="hidden">Next</button>
-            </div>
+            <div class="flashcard"><div id="character" class="character hidden"></div><div id="pinyin" class="pinyin hidden"></div><div id="meaning" class="meaning hidden"></div></div>
+            <div id="characterRating" class="ratingRow hidden"><button id="characterAgainButton" class="secondaryButton">Still Learning</button><button id="characterKnowButton">I Know It</button></div>
+            <div class="actionRow"><button id="revealButton">Reveal</button><button id="nextButton" class="hidden">Next</button></div>
         </div>
-
         <div id="quizScreen" class="hidden">
-            <button id="quizBackButton" class="backButton">← Lesson</button>
-            <h1>Lesson Quiz</h1>
-            <h2 id="quizTitle"></h2>
+            <button id="quizBackButton" class="backButton">← Lesson</button><h1>Lesson Quiz</h1><h2 id="quizTitle"></h2>
             <div class="progress">Question <span id="quizNumber">1</span> of <span id="quizTotal">5</span></div>
-            <div class="quizCard">
-                <div id="quizCharacter" class="quizCharacter"></div>
-                <p>Choose the correct Pinyin</p>
-                <div id="quizOptions" class="quizOptions"></div>
-                <div id="quizFeedback" class="quizFeedback hidden"></div>
-            </div>
+            <div class="quizCard"><div id="quizCharacter" class="quizCharacter"></div><p>Choose the correct Pinyin</p><div id="quizOptions" class="quizOptions"></div><div id="quizFeedback" class="quizFeedback hidden"></div></div>
             <button id="quizNextButton" class="hidden">Next Question</button>
         </div>
-
-        <div id="quizResultScreen" class="hidden">
-            <h1 id="quizResultTitle">Lesson Complete</h1>
-            <div class="resultCard">
-                <div id="quizScore" class="resultScore"></div>
-                <p id="quizResultMessage"></p>
-            </div>
-            <button id="quizResultButton">Continue</button>
-        </div>
-
+        <div id="quizResultScreen" class="hidden"><h1 id="quizResultTitle">Lesson Complete</h1><div class="resultCard"><div id="quizScore" class="resultScore"></div><p id="quizResultMessage"></p></div><button id="quizResultButton">Continue</button></div>
         <div id="wordLessonScreen" class="hidden">
-            <button id="wordBackButton" class="backButton">← Lessons</button>
-            <h1>Word Building</h1>
-            <h2 id="wordLessonTitle"></h2>
+            <button id="wordBackButton" class="backButton">← Lessons</button><h1>Word Building</h1><h2 id="wordLessonTitle"></h2>
             <div class="progress">Word <span id="wordCardNumber">1</span> of <span id="wordCardTotal">5</span></div>
-            <div class="flashcard wordCard">
-                <div id="word" class="character hidden"></div>
-                <div id="wordPinyin" class="pinyin hidden"></div>
-                <div id="wordMeaning" class="meaning hidden"></div>
-                <div id="wordBreakdown" class="wordBreakdown hidden"></div>
-            </div>
-            <div id="wordRating" class="ratingRow hidden">
-                <button id="wordAgainButton" class="secondaryButton">Still Learning</button>
-                <button id="wordKnowButton">I Know It</button>
-            </div>
-            <div class="actionRow">
-                <button id="wordRevealButton">Reveal</button>
-                <button id="wordNextButton" class="hidden">Next</button>
-            </div>
+            <div class="flashcard wordCard"><div id="word" class="character hidden"></div><div id="wordPinyin" class="pinyin hidden"></div><div id="wordMeaning" class="meaning hidden"></div><div id="wordBreakdown" class="wordBreakdown hidden"></div></div>
+            <div id="wordRating" class="ratingRow hidden"><button id="wordAgainButton" class="secondaryButton">Still Learning</button><button id="wordKnowButton">I Know It</button></div>
+            <div class="actionRow"><button id="wordRevealButton">Reveal</button><button id="wordNextButton" class="hidden">Next</button></div>
         </div>
-
         <div id="reviewScreen" class="hidden">
-            <button id="reviewBackButton" class="backButton">← Home</button>
-            <h1>Weak Items Review</h1>
-            <p id="reviewProgress" class="progress"></p>
-            <div class="flashcard">
-                <div id="reviewSymbol" class="character"></div>
-                <div id="reviewPinyin" class="pinyin hidden"></div>
-                <div id="reviewMeaning" class="meaning hidden"></div>
-            </div>
-            <button id="reviewRevealButton">Reveal</button>
-            <div id="reviewRating" class="ratingRow hidden">
-                <button id="reviewAgainButton" class="secondaryButton">Still Learning</button>
-                <button id="reviewKnowButton">I Know It</button>
-            </div>
+            <button id="reviewBackButton" class="backButton">← Home</button><h1>Weak Items Review</h1><p id="reviewProgress" class="progress"></p>
+            <div class="flashcard"><div id="reviewSymbol" class="character"></div><div id="reviewPinyin" class="pinyin hidden"></div><div id="reviewMeaning" class="meaning hidden"></div></div>
+            <button id="reviewRevealButton">Reveal</button><div id="reviewRating" class="ratingRow hidden"><button id="reviewAgainButton" class="secondaryButton">Still Learning</button><button id="reviewKnowButton">I Know It</button></div>
         </div>
     </div>
-
-    <script src="data.js"></script>
-    <script src="script.js"></script>
-    <script src="daily.js"></script>
+    <script src="data.js"></script><script src="script.js"></script><script src="daily.js"></script>
     <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
-        }
+        const totalCharactersElement = document.getElementById("totalCharacters");
+        if (totalCharactersElement) totalCharactersElement.textContent = lessons.reduce((total, lesson) => total + lesson.characters.length, 0);
+        if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
     </script>
 </body>
 </html>
