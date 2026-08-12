@@ -1,106 +1,181 @@
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+    --green: #1c6641;
+    --green-dark: #144c31;
+    --cream: #f7efdd;
+    --card: #fffdf7;
+    --text: #222;
+    --muted: #6b6b6b;
+    --border: #dfd7c7;
+}
+
+html, body { min-height: 100%; }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Arial, sans-serif;
+    background-color: var(--cream);
     margin: 0;
-    padding: 0;
-    color: #222;
+    color: var(--text);
+    overscroll-behavior-y: none;
 }
 
 .app {
+    width: 100%;
     max-width: 600px;
-    margin: 50px auto;
+    min-height: 100dvh;
+    margin: 0 auto;
     text-align: center;
-    padding: 20px;
+    padding: calc(22px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
 }
 
-h1 { margin-bottom: 5px; }
+.brandRow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    margin-bottom: 26px;
+}
+
+.appIcon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.12);
+    flex: 0 0 auto;
+}
+
+h1 {
+    margin: 0 0 4px;
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.05;
+}
+
+.tagline {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+}
 
 h2 {
-    margin-top: 18px;
-    margin-bottom: 10px;
-    font-weight: normal;
-    color: #555;
+    margin: 24px 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #444;
+    text-align: left;
+}
+
+#lessonScreen h2,
+#wordLessonScreen h2 {
+    text-align: center;
+    font-weight: 500;
+    margin-top: 10px;
 }
 
 .progress {
-    margin-bottom: 25px;
-    color: #666;
+    margin: 18px 0 20px;
+    color: var(--muted);
+    font-size: 15px;
 }
 
 .flashcard {
-    background-color: white;
-    border-radius: 15px;
-    padding: 60px 20px;
-    min-height: 300px;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 48px 20px;
+    min-height: min(48vh, 360px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 26px rgba(74, 55, 24, 0.08);
 }
 
 .character {
-    font-size: 100px;
-    margin-bottom: 20px;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+    font-size: clamp(82px, 27vw, 118px);
+    line-height: 1.05;
+    margin-bottom: 22px;
 }
 
 .pinyin {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: clamp(28px, 8vw, 36px);
+    margin-bottom: 12px;
+    color: var(--green);
+    font-weight: 700;
 }
 
 .meaning {
-    font-size: 24px;
-    color: #555;
+    font-size: 22px;
+    color: #4f4f4f;
 }
 
 button {
-    margin-top: 25px;
-    padding: 12px 30px;
-    font-size: 18px;
+    min-height: 50px;
+    margin-top: 18px;
+    padding: 13px 24px;
+    font: inherit;
+    font-size: 17px;
+    font-weight: 700;
     border: none;
-    border-radius: 8px;
+    border-radius: 14px;
     cursor: pointer;
-    background-color: #333;
+    background-color: var(--green);
     color: white;
+    touch-action: manipulation;
 }
 
-button:hover { background-color: #555; }
+button:active { transform: scale(.985); }
+button:hover { background-color: var(--green-dark); }
 .hidden { display: none !important; }
 
 .lessonButton {
     display: block;
     width: 100%;
-    margin: 15px 0;
-    padding: 20px;
-    font-size: 20px;
-    line-height: 1.5;
-    background-color: white;
-    color: #333;
-    border: 2px solid #ddd;
-    border-radius: 12px;
-    cursor: pointer;
+    margin: 12px 0;
+    padding: 18px;
+    min-height: 96px;
+    font-size: 18px;
+    line-height: 1.45;
+    background-color: var(--card);
+    color: #2b2b2b;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 4px 14px rgba(74, 55, 24, 0.06);
 }
 
-.lessonButton:hover { background-color: #f0f0f0; }
-.lessonButton small { color: #777; }
+.lessonButton:hover { background-color: #fffaf0; }
+.lessonButton small { color: var(--muted); }
 
 .backButton {
-    margin-top: 0;
-    margin-bottom: 20px;
-    padding: 8px 15px;
+    display: block;
+    margin: 0 0 18px;
+    padding: 8px 4px;
+    min-height: 44px;
     font-size: 16px;
-    background-color: transparent;
-    color: #555;
+    background: transparent;
+    color: var(--green);
     border: none;
+    text-align: left;
 }
 
-.backButton:hover { background-color: #eee; }
+.backButton:hover { background: transparent; }
 
-@media (max-width: 640px) {
-    .app { margin: 15px auto; padding: 15px; }
-    .flashcard { min-height: 280px; padding: 45px 15px; }
-    .character { font-size: 88px; }
+.actionRow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.actionRow button { width: 100%; }
+
+@media (display-mode: standalone) {
+    body { background-color: var(--cream); }
+}
+
+@media (max-width: 420px) {
+    .app { padding-left: 14px; padding-right: 14px; }
+    .brandRow { gap: 12px; }
+    .appIcon { width: 64px; height: 64px; border-radius: 16px; }
+    .flashcard { min-height: 46vh; padding: 40px 16px; }
 }
