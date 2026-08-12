@@ -9,6 +9,8 @@
     --text: #222;
     --muted: #6b6b6b;
     --border: #dfd7c7;
+    --red: #b94343;
+    --red-soft: #fbeaea;
 }
 
 html, body { min-height: 100%; }
@@ -67,7 +69,8 @@ h2 {
 }
 
 #lessonScreen h2,
-#wordLessonScreen h2 {
+#wordLessonScreen h2,
+#quizScreen h2 {
     text-align: center;
     font-weight: 500;
     margin-top: 10px;
@@ -124,7 +127,9 @@ h2 {
     font-size: 15px;
 }
 
-.flashcard {
+.flashcard,
+.quizCard,
+.resultCard {
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 24px;
@@ -137,12 +142,17 @@ h2 {
     box-shadow: 0 8px 26px rgba(74, 55, 24, 0.08);
 }
 
-.character {
+.wordCard { min-height: min(54vh, 430px); }
+
+.character,
+.quizCharacter {
     font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
     font-size: clamp(82px, 27vw, 118px);
     line-height: 1.05;
     margin-bottom: 22px;
 }
+
+.quizCharacter { margin-bottom: 10px; }
 
 .pinyin {
     font-size: clamp(28px, 8vw, 36px);
@@ -176,7 +186,8 @@ button:hover { background-color: var(--green-dark); }
 button:disabled { cursor: default; }
 .hidden { display: none !important; }
 
-.lessonButton {
+.lessonButton,
+.reviewButton {
     display: block;
     width: 100%;
     margin: 12px 0;
@@ -192,27 +203,28 @@ button:disabled { cursor: default; }
     box-shadow: 0 4px 14px rgba(74, 55, 24, 0.06);
 }
 
-.lessonButton:hover { background-color: #fffaf0; }
-.lessonButton small { display: block; margin-top: 8px; color: var(--muted); font-weight: 500; }
+.lessonButton:hover,
+.reviewButton:hover { background-color: #fffaf0; }
+.lessonButton small,
+.reviewButton small { display: block; margin-top: 8px; color: var(--muted); font-weight: 500; }
 .lessonButton.completed { border-color: #9dc4aa; background: var(--green-soft); }
 .lessonButton.completed small { color: var(--green-dark); }
-.lessonButton.locked { opacity: .58; background: #eee9df; box-shadow: none; }
-.lessonButton.locked:hover { background: #eee9df; }
+.lessonButton.locked,
+.reviewButton.locked { opacity: .58; background: #eee9df; box-shadow: none; }
+.lessonButton.locked:hover,
+.reviewButton.locked:hover { background: #eee9df; }
 
-.lessonTopline {
+.lessonTopline,
+.reviewButton {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 5px;
 }
 
-.lessonTitleText {
-    display: block;
-    font-size: 16px;
-    font-weight: 600;
-    color: #4c4c4c;
-}
+.lessonTopline { margin-bottom: 5px; }
+.lessonTitleText { display: block; font-size: 16px; font-weight: 600; color: #4c4c4c; }
+.reviewButton { min-height: 86px; border-color: #b7cbbf; margin-top: 18px; }
 
 .backButton {
     display: block;
@@ -233,8 +245,85 @@ button:disabled { cursor: default; }
     grid-template-columns: 1fr;
     gap: 10px;
 }
-
 .actionRow button { width: 100%; }
+
+.ratingRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+}
+.ratingRow button { width: 100%; margin-top: 0; }
+
+.secondaryButton {
+    background: transparent;
+    color: var(--green);
+    border: 1px solid #9ab9a7;
+}
+.secondaryButton:hover { background: var(--green-soft); }
+
+.wordBreakdown {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin-top: 24px;
+}
+
+.componentChip {
+    border: 1px solid var(--border);
+    background: #fffaf0;
+    border-radius: 14px;
+    padding: 10px 8px;
+}
+
+.componentChip strong {
+    font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+    display: block;
+    font-size: 28px;
+}
+.componentChip span { display: block; color: var(--green); font-weight: 700; }
+.componentChip small { display: block; color: var(--muted); margin-top: 2px; }
+
+.quizCard { min-height: auto; padding: 34px 18px; }
+.quizCard p { color: var(--muted); margin: 0 0 16px; }
+
+.quizOptions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.quizOption {
+    margin: 0;
+    width: 100%;
+    background: white;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.quizOption.correct {
+    background: var(--green-soft);
+    border-color: var(--green);
+    color: var(--green-dark);
+}
+
+.quizOption.incorrect {
+    background: var(--red-soft);
+    border-color: var(--red);
+    color: var(--red);
+}
+
+.quizFeedback { margin-top: 18px; font-weight: 700; }
+.quizFeedback.success { color: var(--green); }
+.quizFeedback.error { color: var(--red); }
+
+.resultCard { min-height: 260px; margin-top: 26px; }
+.resultScore { font-size: 58px; font-weight: 800; color: var(--green); }
+.resultCard p { color: var(--muted); max-width: 330px; line-height: 1.5; }
+
+#reviewScreen .flashcard { min-height: min(48vh, 340px); }
 
 @media (display-mode: standalone) {
     body { background-color: var(--cream); }
@@ -246,4 +335,5 @@ button:disabled { cursor: default; }
     .appIcon { width: 64px; height: 64px; border-radius: 16px; }
     .flashcard { min-height: 46vh; padding: 40px 16px; }
     .progressPanel strong { font-size: 24px; }
+    .ratingRow { grid-template-columns: 1fr; }
 }
