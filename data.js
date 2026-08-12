@@ -75,10 +75,10 @@ const wordLessons = [
         requiresLesson: 3,
         words: [
             { word: "好人", pinyin: "hǎorén", meaning: "good person" },
-            { word: "大好", pinyin: "dàhǎo", meaning: "very good / excellent" },
-            { word: "在上", pinyin: "zài shàng", meaning: "on top / above" },
-            { word: "在下", pinyin: "zài xià", meaning: "below / underneath" },
-            { word: "这人", pinyin: "zhè rén", meaning: "this person" }
+            { word: "大小", pinyin: "dàxiǎo", meaning: "size" },
+            { word: "上下", pinyin: "shàngxià", meaning: "up and down / above and below" },
+            { word: "这人", pinyin: "zhè rén", meaning: "this person" },
+            { word: "那人", pinyin: "nà rén", meaning: "that person" }
         ]
     },
     {
