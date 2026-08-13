@@ -3,7 +3,7 @@ const listeningRushState={running:false,round:0,total:20,score:0,correct:0,strea
 const listeningRushButton=document.createElement('button');
 listeningRushButton.id='listeningRushButton';
 listeningRushButton.className='gameLaunch';
-listeningRushButton.innerHTML=`<span><strong>Listening Rush</strong><small>Hear Mandarin → tap the character</small></span><span>🔊</span>`;
+listeningRushButton.innerHTML=`<span><strong>Audio Rush</strong><small>Hear Mandarin → tap the character</small></span><span>🔊</span>`;
 document.querySelector('.gamesPanel')?.appendChild(listeningRushButton);
 const listeningBadge=document.querySelector('.gamesPanel .gameBadge');
 if(listeningBadge)listeningBadge.textContent='4 GAMES';
@@ -34,7 +34,7 @@ listeningRushResult.id='listeningRushResult';
 listeningRushResult.className='hidden';
 listeningRushResult.innerHTML=`
 <button id="listeningRushResultBack" class="backButton">← Practice</button>
-<h1>Listening Rush</h1>
+<h1>Audio Rush</h1>
 <div class="rushResultCard">
   <div class="rushFinalScore" id="listeningRushFinalScore">0</div><span>points</span>
   <div class="rushStats">
