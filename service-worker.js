@@ -1,5 +1,5 @@
-const CACHE_NAME = "mandarin-learning-v12";
-const ASSETS = ["./","./index.html","./style.css","./daily.css","./speech.css","./games.css","./data.js","./script.js","./daily.js","./practice.js","./grammar.js","./navigation.js","./speech.js","./games.js","./word-rush.js","./listening-rush.js","./manifest.webmanifest","./icons/icon-192.png"];
+const CACHE_NAME = "mandarin-learning-v13";
+const ASSETS = ["./","./index.html","./style.css","./daily.css","./speech.css","./games.css","./data.js","./script.js","./daily.js","./practice.js","./grammar.js","./navigation.js","./speech.js","./games.js","./word-rush.js","./listening-rush.js","./survival.js","./manifest.webmanifest","./icons/icon-192.png"];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)));self.skipWaiting();});
 self.addEventListener("activate",event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))));self.clients.claim();});
 self.addEventListener("fetch",event=>{if(event.request.method!=="GET")return;event.respondWith(fetch(event.request).then(response=>{const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy));return response;}).catch(()=>caches.match(event.request).then(cached=>cached||caches.match("./index.html"))));});
